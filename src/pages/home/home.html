@@ -1,14 +1,29 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
+  <ion-navbar color="dark" >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="font-size:30px">Motivación Diaria
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+    <div>
+      <!-- <img src="./imgs.ts" id="imagen" alt="" block> -->
+
+      <img [src]="current_image" alt="">
+      <button ion-button block id="boton" (click)="random()">
+        Cambiar Imagen
+      </button>
+      </div>
+
+
+  <ion-fab top edge right #fab>
+      <button ion-fab  (click)="share(current_image)">
+          <ion-icon name="md-share"></ion-icon>
+      </button>
+  </ion-fab>
+   
+  
 </ion-content>

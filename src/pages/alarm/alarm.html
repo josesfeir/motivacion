@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>Alarma</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list no-lines>
+ 
+    <ion-item>
+      <ion-label>¡Notifícame! </ion-label>
+      <ion-datetime 
+      displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="notifyTime" (ionChange)="timeChange($event)">
+    </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Estos días:</ion-label>
+    </ion-item>
+
+    <ion-item *ngFor="let day of days">
+        <ion-label>{{day.title}}</ion-label>
+        <ion-checkbox [(ngModel)]="day.checked" color="primary"></ion-checkbox>
+    </ion-item>
+
+</ion-list>
+
+</ion-content>
+<ion-footer>
+ 
+  <button (click)="addNotifications()" ion-button color="primary" full>¡Listo!</button>
+  <button (click)="cancelAll()" ion-button color="danger" full>Cancelar Alarmas</button>
+
+</ion-footer>
