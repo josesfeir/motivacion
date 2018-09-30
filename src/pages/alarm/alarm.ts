@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, Platform, AlertController } from 'ionic-angular';
+//ionic native
 import { LocalNotifications } from '@ionic-native/local-notifications';
+//moment
 import * as moment from 'moment';
 
 @Component({
@@ -36,19 +38,24 @@ export class AlarmPage {
  
     }
     ionViewDidLoad(){ 
-      this.platform.ready().then(() =>{
-        console.log("-----------------in view did load-------------------");
-        this.localNotifications.hasPermission().then(function(granted){
-          if (!granted){
-            this.localNotifications.registerPermission();
-          }
-        })
+      this.platform.ready()
+      .then((res) =>{
+        if (res =='cordova'){
+          this.localNotifications.hasPermission()
+          .then(response =>{
+            console.log("hasPermission: ", response)
+            if (!response) this.localNotifications.requestPermission();
+          })
+        }
+       
       });
     }
     
     timeChange(time){
       this.chosenHours = time.hour;
-      this.chosenMinutes = time.minute;
+      this.chosenMinutes = time.minute;      
+      console.log("hora: ", this.chosenHours);
+      console.log("minuto: ", this.chosenMinutes);
   }
  
     addNotifications(){
@@ -65,6 +72,7 @@ export class AlarmPage {
                 dayDifference = dayDifference + 7; // for cases where the day is in the following week
             }
  
+            //AGREGAR CANTIDAD DE HORAS Y MINUTOS FALTANTES
             firstNotificationTime.setHours(firstNotificationTime.getHours() + (24 * (dayDifference)));
             firstNotificationTime.setHours(this.chosenHours);
             firstNotificationTime.setMinutes(this.chosenMinutes);
@@ -74,9 +82,10 @@ export class AlarmPage {
                 title: 'Hey!',
                 text: '¡Mira tu Frase Motivadora!',
                 trigger : {at: firstNotificationTime},
-                every: "week"
+               // every: "week"
             };
- 
+   
+            //PETA...
             this.notifications.push(notification);
  
         }
@@ -88,11 +97,20 @@ export class AlarmPage {
     if(this.platform.is('cordova')){
  
         // Cancel any existing notifications
-        this.localNotifications.cancelAll().then(() => {
+        this.localNotifications.cancelAll()
+        .then(() => {
  
             // Schedule the new notifications
+            // this.notifications = [
+            //   {
+            //     id:6,
+            //     title: 'cococ',
+            //     text: 'fdfdf',
+            //     trigger: {at: new Date(new Date().getTime() + 7400)}
+            //   }
+            // ]
+            
             this.localNotifications.schedule(this.notifications);
- 
             this.notifications = [];
  
             let alert = this.alertCtrl.create({
@@ -117,6 +135,10 @@ export class AlarmPage {
  
     alert.present();
  
+    }
+
+    coco(){
+      
     }
     
 

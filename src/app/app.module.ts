@@ -7,8 +7,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-import{cambiarImagen} from '../pages/home/imgs';
-
 import {Pagina2Page, Pagina3Page, AjustesPage,AlarmPage} from "../pages/index.paginas";
 
 //firebase
