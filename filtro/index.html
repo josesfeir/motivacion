@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filtro Familiar</title>
+<meta name="theme-color" content="#1f6f5c">
+<link rel="icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg: #f6f7f5; --card: #ffffff; --text: #1d2321; --muted: #5d6763;
+    --accent: #1f6f5c; --accent-text: #ffffff; --border: #dfe3e0; --ok: #1f7a3a; --bad: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121614; --card: #1b201e; --text: #e7ece9; --muted: #9aa5a0;
+      --accent: #4fbf9f; --accent-text: #0d1311; --border: #2c3330; --ok: #6fd18a; --bad: #ff8a80; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  p.sub { color: var(--muted); margin: 0 0 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+  .card h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  .hidden { display: none; }
+  .btn { display: inline-block; width: 100%; text-align: center; padding: 14px; border: 0; border-radius: 10px;
+    background: var(--accent); color: var(--accent-text); font-size: 1rem; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .btn.sec { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  ol { padding-left: 20px; margin: 10px 0 14px; }
+  li { margin-bottom: 6px; }
+  .host { display: flex; gap: 8px; margin: 10px 0; }
+  .host code { flex: 1; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    font-size: .95rem; overflow-wrap: anywhere; }
+  .host button { flex: none; width: auto; padding: 0 16px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tabs button { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-size: .95rem; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  #estado { font-weight: 600; margin-top: 10px; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  small { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Filtro Familiar</h1>
+  <p class="sub">Bloquea sitios para adultos en todo el móvil (navegadores y apps) mediante un DNS filtrado.</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" data-os="android" aria-selected="false">Android</button>
+    <button role="tab" data-os="ios" aria-selected="false">iPhone / iPad</button>
+  </div>
+
+  <section id="android" class="card hidden">
+    <h2>Instalar en Android (9 o superior)</h2>
+    <div class="host">
+      <code id="dnsHost">family.cloudflare-dns.com</code>
+      <button class="btn" id="copiar">Copiar</button>
+    </div>
+    <ol>
+      <li>Pulsa <b>Copiar</b>.</li>
+      <li>Abre <b>Ajustes → Redes e Internet</b> (o <b>Conexiones → Más ajustes de conexión</b> en Samsung).</li>
+      <li>Entra en <b>DNS privado</b>.</li>
+      <li>Elige <b>Nombre de host del proveedor de DNS privado</b>.</li>
+      <li>Pega el texto copiado y pulsa <b>Guardar</b>.</li>
+    </ol>
+    <small>Alternativa: <code>family-filter-dns.cleanbrowsing.org</code></small>
+  </section>
+
+  <section id="ios" class="card hidden">
+    <h2>Instalar en iPhone / iPad (iOS 14 o superior)</h2>
+    <a class="btn" href="filtro-familiar.mobileconfig" download>Descargar perfil del filtro</a>
+    <ol>
+      <li>Abre esta página en <b>Safari</b> y pulsa el botón. Acepta <b>Permitir</b>.</li>
+      <li>Ve a <b>Ajustes → Perfil descargado</b> y pulsa <b>Instalar</b>.</li>
+      <li>Ve a <b>Ajustes → General → VPN y gestión de dispositivos → DNS</b> y comprueba que <b>Filtro familiar</b> está activo.</li>
+    </ol>
+    <small>Para impedir que se desinstale, activa además <b>Tiempo de uso → Restricciones de contenido y privacidad</b> con un código.</small>
+  </section>
+
+  <section class="card">
+    <h2>Comprobar el filtro</h2>
+    <button class="btn sec" id="probar">Comprobar ahora</button>
+    <div id="estado" aria-live="polite"></div>
+  </section>
+</main>
+<script>
+  const tabs = document.querySelectorAll('.tabs button');
+  function mostrar(os) {
+    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.os === os));
+    ['android', 'ios'].forEach(id => document.getElementById(id).classList.toggle('hidden', id !== os));
+  }
+  tabs.forEach(t => t.addEventListener('click', () => mostrar(t.dataset.os)));
+  const ua = navigator.userAgent;
+  mostrar(/iPhone|iPad|iPod|Macintosh/.test(ua) && 'ontouchend' in document ? 'ios' : 'android');
+
+  document.getElementById('copiar').addEventListener('click', async e => {
+    const txt = document.getElementById('dnsHost').textContent;
+    try { await navigator.clipboard.writeText(txt); }
+    catch {
+      const r = document.createRange(); r.selectNode(document.getElementById('dnsHost'));
+      getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand('copy');
+    }
+    e.target.textContent = 'Copiado';
+    setTimeout(() => e.target.textContent = 'Copiar', 2000);
+  });
+
+  // Cloudflare devuelve 0.0.0.0 para dominios bloqueados por el filtro familiar.
+  // Si el DNS del móvil filtra, este sitio de prueba no carga.
+  document.getElementById('probar').addEventListener('click', () => {
+    const estado = document.getElementById('estado');
+    estado.className = ''; estado.textContent = 'Comprobando…';
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 6000);
+    fetch('https://pornhub.com/favicon.ico?' + Date.now(), { mode: 'no-cors', signal: ctrl.signal, cache: 'no-store' })
+      .then(() => { estado.className = 'bad'; estado.textContent = '✗ El filtro NO está activo.'; })
+      .catch(() => { estado.className = 'ok'; estado.textContent = '✓ El filtro está activo.'; })
+      .finally(() => clearTimeout(t));
+  });
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>

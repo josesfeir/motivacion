@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerURL</key>
+				<string>https://family.cloudflare-dns.com/dns-query</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>1.1.1.3</string>
+					<string>1.0.0.3</string>
+					<string>2606:4700:4700::1113</string>
+					<string>2606:4700:4700::1003</string>
+				</array>
+			</dict>
+			<key>OnDemandRules</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>Connect</string>
+				</dict>
+			</array>
+			<key>ProhibitDisablement</key>
+			<false/>
+			<key>PayloadDisplayName</key>
+			<string>Filtro familiar (DNS)</string>
+			<key>PayloadIdentifier</key>
+			<string>com.motivacion.filtro.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>82BC8049-B1BE-4D21-9746-A9F19981A077</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Bloquea sitios para adultos y malware usando el DNS familiar de Cloudflare (1.1.1.3).</string>
+	<key>PayloadDisplayName</key>
+	<string>Filtro de sitios para adultos</string>
+	<key>PayloadIdentifier</key>
+	<string>com.motivacion.filtro</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>AC51DA78-0E67-4092-A0FA-ED9711FE7675</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
