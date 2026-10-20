@@ -15,8 +15,6 @@
 				<array>
 					<string>1.1.1.3</string>
 					<string>1.0.0.3</string>
-					<string>2606:4700:4700::1113</string>
-					<string>2606:4700:4700::1003</string>
 				</array>
 			</dict>
 			<key>OnDemandRules</key>
@@ -29,7 +27,7 @@
 			<key>ProhibitDisablement</key>
 			<false/>
 			<key>PayloadDisplayName</key>
-			<string>Filtro familiar (DNS)</string>
+			<string>Filtro familiar (1.1.1.3 / 1.0.0.3)</string>
 			<key>PayloadIdentifier</key>
 			<string>com.motivacion.filtro.dns</string>
 			<key>PayloadType</key>
